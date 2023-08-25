@@ -15,7 +15,6 @@
 //
 
 import RIBs
-import SnapKit
 import UIKit
 
 protocol RootPresentableListener: AnyObject {
