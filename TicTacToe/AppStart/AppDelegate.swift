@@ -21,9 +21,6 @@ import UIKit
 @UIApplicationMain
 public class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    /// The window.
-    public var window: UIWindow?
-
     /// Tells the delegate that the launch process is almost done and the app is almost ready to run.
     ///
     /// - parameter application: Your singleton app object.
@@ -34,8 +31,4 @@ public class AppDelegate: UIResponder, UIApplicationDelegate {
     public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         return true
     }
-
-    // MARK: - Private
-
-    private var launchRouter: LaunchRouting?
 }
