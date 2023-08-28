@@ -44,6 +44,17 @@ final class RootViewController: UIViewController, RootPresentable, RootViewContr
     // MARK: - RootViewControllable
 
     func present(viewController: ViewControllable) {
+        viewController.uiviewController.isModalInPresentation = true
         present(viewController.uiviewController, animated: true, completion: nil)
     }
+    
+    func dismiss(viewController: ViewControllable) {
+        if presentedViewController == viewController.uiviewController {
+            dismiss(animated: true)
+        }
+    }
 }
+
+// MARK: LoggedInViewControllable
+
+extension RootViewController: LoggedInViewControllable {}

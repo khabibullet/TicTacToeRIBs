@@ -11,11 +11,14 @@ import RIBs
 protocol LoggedInDependency: Dependency {
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
+    var loggedInViewController: LoggedInViewControllable { get }
 }
 
 final class LoggedInComponent: Component<LoggedInDependency> {
 
-    // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+    fileprivate var loggedInViewController: LoggedInViewControllable {
+        return dependency.loggedInViewController
+    }
 }
 
 // MARK: - Builder
@@ -32,9 +35,9 @@ final class LoggedInBuilder: Builder<LoggedInDependency>, LoggedInBuildable {
 
     func build(withListener listener: LoggedInListener) -> LoggedInRouting {
         let component = LoggedInComponent(dependency: dependency)
-        let viewController = LoggedInViewController()
-        let interactor = LoggedInInteractor(presenter: viewController)
+        let interactor = LoggedInInteractor()
         interactor.listener = listener
-        return LoggedInRouter(interactor: interactor, viewController: viewController)
+        return LoggedInRouter(interactor: interactor,
+                              viewController: component.loggedInViewController)
     }
 }
