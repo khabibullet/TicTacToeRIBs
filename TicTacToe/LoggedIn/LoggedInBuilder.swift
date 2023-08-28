@@ -14,7 +14,7 @@ protocol LoggedInDependency: Dependency {
     var loggedInViewController: LoggedInViewControllable { get }
 }
 
-final class LoggedInComponent: Component<LoggedInDependency> {
+final class LoggedInComponent: Component<LoggedInDependency>, OffGameDependency {
 
     fileprivate var loggedInViewController: LoggedInViewControllable {
         return dependency.loggedInViewController
@@ -35,9 +35,14 @@ final class LoggedInBuilder: Builder<LoggedInDependency>, LoggedInBuildable {
 
     func build(withListener listener: LoggedInListener) -> LoggedInRouting {
         let component = LoggedInComponent(dependency: dependency)
+        
         let interactor = LoggedInInteractor()
         interactor.listener = listener
+        
+        let offGameBuilder = OffGameBuilder(dependency: component)
+        
         return LoggedInRouter(interactor: interactor,
-                              viewController: component.loggedInViewController)
+                              viewController: component.loggedInViewController,
+                              offGameBuilder: offGameBuilder)
     }
 }

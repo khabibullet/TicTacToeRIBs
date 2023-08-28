@@ -9,12 +9,11 @@
 import RIBs
 import RxSwift
 
-protocol LoggedInRouting: ViewableRouting {
+protocol LoggedInRouting: Routing {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
 protocol LoggedInPresentable: Presentable {
-    var listener: LoggedInPresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
