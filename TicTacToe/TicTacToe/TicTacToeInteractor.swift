@@ -24,7 +24,7 @@ protocol TicTacToePresentable: Presentable {
 
 protocol TicTacToeListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-    func closeGame()
+    func gameDidEnd()
 }
 
 final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, TicTacToeInteractable, TicTacToePresentableListener {
@@ -70,7 +70,7 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     }
     
     func closeGame() {
-        listener?.closeGame()
+        listener?.gameDidEnd()
     }
     
     //MARK: - Private
@@ -108,7 +108,7 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     }
     
     private func announceWinner() {
-        var player = currentPlayer == .player1 ? "Player1" : "Player2"
+        let player = currentPlayer == .player1 ? "Player1" : "Player2"
         presenter.showAlertMessage(string: "\(player) won!")
     }
 }

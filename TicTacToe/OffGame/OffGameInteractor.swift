@@ -20,7 +20,7 @@ protocol OffGamePresentable: Presentable {
 
 protocol OffGameListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-    func startGame()
+    func startTicTacToe()
 }
 
 final class OffGameInteractor: PresentableInteractor<OffGamePresentable>, OffGameInteractable, OffGamePresentableListener {
@@ -46,6 +46,6 @@ final class OffGameInteractor: PresentableInteractor<OffGamePresentable>, OffGam
     }
     
     func startGame() {
-        listener?.startGame()
+        listener?.startTicTacToe()
     }
 }

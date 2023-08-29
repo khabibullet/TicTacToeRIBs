@@ -34,11 +34,11 @@ final class LoggedInInteractor: Interactor, LoggedInInteractable {
         // TODO: Pause any business logic.
     }
     
-    func closeGame() {
+    func gameDidEnd() {
         router?.routeToOffGame()
     }
     
-    func startGame() {
+    func startTicTacToe() {
         router?.routeToTicTacToe()
     }
 }
