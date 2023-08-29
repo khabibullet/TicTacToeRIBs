@@ -21,7 +21,7 @@ final class OffGameComponent: Component<OffGameDependency> {
     // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
     
     fileprivate var player1Name: String {
-            return dependency.player1Name
+        return dependency.player1Name
     }
 
     fileprivate var player2Name: String {

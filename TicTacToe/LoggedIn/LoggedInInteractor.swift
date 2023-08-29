@@ -41,7 +41,9 @@ final class LoggedInInteractor: Interactor, LoggedInInteractable {
     }
     
     func gameDidEnd(with winner: PlayerKind) {
-        mutableScoreStream.updateScore(withWinner: winner)
+        if winner != .none {
+            mutableScoreStream.updateScore(withWinner: winner)
+        }
         router?.routeToOffGame()
     }
     

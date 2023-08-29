@@ -34,6 +34,9 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     
     private var currentPlayer = PlayerKind.player1
     
+    private let player1Name: String
+    private let player2Name: String
+    
     private var grid: [[PlayerKind]] = [
         [.none, .none, .none],
         [.none, .none, .none],
@@ -42,7 +45,11 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     
     // TODO: Add additional dependencies to constructor. Do not perform any logic
     // in constructor.
-    override init(presenter: TicTacToePresentable) {
+    init(presenter: TicTacToePresentable,
+                  player1Name: String,
+                  player2Name: String) {
+        self.player1Name = player1Name
+        self.player2Name = player2Name
         super.init(presenter: presenter)
         presenter.listener = self
         presenter.setInitialGrid(grid: grid)
@@ -64,6 +71,9 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
         presenter.markCell(row: row, column: col, player: currentPlayer)
         if isSomeWinner() {
             announceWinner()
+        } else if !grid.flatMap({ $0 }).contains(where: { $0 == .none }) {
+            currentPlayer = .none
+            announceDraw()
         } else {
             switchPlayer()
         }
@@ -107,8 +117,12 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
         }
     }
     
+    private func announceDraw() {
+        presenter.showAlertMessage(string: "It is draw!")
+    }
+    
     private func announceWinner() {
-        let player = currentPlayer == .player1 ? "Player1" : "Player2"
+        let player = currentPlayer == .player1 ? player1Name : player2Name
         presenter.showAlertMessage(string: "\(player) won!")
     }
 }
