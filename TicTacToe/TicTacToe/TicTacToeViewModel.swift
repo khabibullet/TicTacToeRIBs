@@ -15,7 +15,7 @@ protocol TicTacToePresentableListener: AnyObject {
     func closeGame()
 }
 
-enum Playerkind: Int {
+enum PlayerKind: Int {
     case player1
     case player2
     case none
@@ -31,7 +31,7 @@ final class TicTacToeViewModel: ObservableObject, TicTacToePresentable {
     
     @Published var isAlertShown = false
     
-    @Published var grid: [[Playerkind]] = [
+    @Published var grid: [[PlayerKind]] = [
         [.none, .none, .none],
         [.none, .none, .none],
         [.none, .none, .none]
@@ -48,11 +48,11 @@ final class TicTacToeViewModel: ObservableObject, TicTacToePresentable {
     
     // MARK: - TicTacToePresentable
     
-    func setInitialGrid(grid: [[Playerkind]]) {
+    func setInitialGrid(grid: [[PlayerKind]]) {
         self.grid = grid
     }
     
-    func markCell(row: Int, column: Int, player: Playerkind) {
+    func markCell(row: Int, column: Int, player: PlayerKind) {
         guard (0...2).contains(row), (0...2).contains(column) else { return }
         grid[row][column] = player
     }

@@ -23,7 +23,13 @@ final class LoggedInInteractor: Interactor, LoggedInInteractable {
     
     weak var router: LoggedInRouting?
     weak var listener: LoggedInListener?
+    
+    private let mutableScoreStream: MutableScoreStream
 
+    init(mutableScoreStream: MutableScoreStream) {
+        self.mutableScoreStream = mutableScoreStream
+    }
+    
     override func didBecomeActive() {
         super.didBecomeActive()
         // TODO: Implement business logic here.
@@ -34,7 +40,8 @@ final class LoggedInInteractor: Interactor, LoggedInInteractable {
         // TODO: Pause any business logic.
     }
     
-    func gameDidEnd() {
+    func gameDidEnd(with winner: PlayerKind) {
+        mutableScoreStream.updateScore(withWinner: winner)
         router?.routeToOffGame()
     }
     

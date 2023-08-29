@@ -16,19 +16,29 @@ struct OffGameView: View {
         ZStack {
             Color.yellow
                 .edgesIgnoringSafeArea(.all)
-            Button("Start Game") {
-                viewModel.didTapStartGameButton()
+            VStack(spacing: 50) {
+                VStack(spacing: 10) {
+                    Text("⭕️ \(viewModel.player1Name) (\(viewModel.score.player1Score))")
+                    Text("vs.")
+                    Text("❌ \(viewModel.player2Name) (\(viewModel.score.player2Score))")
+                }
+                .font(.title)
+                .padding(5)
+                Button("Start Game") {
+                    viewModel.didTapStartGameButton()
+                }
+                .foregroundColor(.white)
+                .padding()
+                .background(.black)
+                .clipShape(Capsule())
             }
-            .foregroundColor(.white)
-            .padding()
-            .background(.black)
-            .clipShape(Capsule())
         }
     }
 }
 
 struct OffGameView_Previews: PreviewProvider {
     static var previews: some View {
-        OffGameView(viewModel: OffGameViewModel())
+        OffGameView(viewModel:OffGameViewModel(
+            player1Name: "Player1", player2Name: "Player2"))
     }
 }

@@ -16,15 +16,15 @@ protocol TicTacToeRouting: ViewableRouting {
 protocol TicTacToePresentable: Presentable {
     var listener: TicTacToePresentableListener? { get set }
     // TODO: Declare methods the interactor can invoke the presenter to present data.
-    func setInitialGrid(grid: [[Playerkind]])
-    func markCell(row: Int, column: Int, player: Playerkind)
+    func setInitialGrid(grid: [[PlayerKind]])
+    func markCell(row: Int, column: Int, player: PlayerKind)
     func showAlertMessage(string: String)
     func closeAlert()
 }
 
 protocol TicTacToeListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
-    func gameDidEnd()
+    func gameDidEnd(with winner: PlayerKind)
 }
 
 final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, TicTacToeInteractable, TicTacToePresentableListener {
@@ -32,9 +32,9 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     weak var router: TicTacToeRouting?
     weak var listener: TicTacToeListener?
     
-    private var currentPlayer = Playerkind.player1
+    private var currentPlayer = PlayerKind.player1
     
-    private var grid: [[Playerkind]] = [
+    private var grid: [[PlayerKind]] = [
         [.none, .none, .none],
         [.none, .none, .none],
         [.none, .none, .none]
@@ -70,7 +70,7 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
     }
     
     func closeGame() {
-        listener?.gameDidEnd()
+        listener?.gameDidEnd(with: currentPlayer)
     }
     
     //MARK: - Private
@@ -99,7 +99,7 @@ final class TicTacToeInteractor: PresentableInteractor<TicTacToePresentable>, Ti
         return false
     }
     
-    private func isTripple(_ tripple: [Playerkind]) -> Bool {
+    private func isTripple(_ tripple: [PlayerKind]) -> Bool {
         if tripple[0] == tripple[1], tripple[0] == tripple[2], tripple[0] != .none {
             return true
         } else {
