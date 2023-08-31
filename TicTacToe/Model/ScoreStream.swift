@@ -17,7 +17,7 @@ public struct Score {
     }
 }
 
-public protocol ScoreStream: class {
+public protocol ScoreStream: AnyObject {
     var score: Observable<Score> { get }
 }
 
