@@ -20,7 +20,9 @@ protocol LoggedInListener: AnyObject {
     // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
-final class LoggedInInteractor: Interactor, LoggedInInteractable, LoggedInActionableItem {
+final class LoggedInInteractor: Interactor,
+                                LoggedInInteractable,
+                                LoggedInActionableItem {
     
     weak var router: LoggedInRouting?
     weak var listener: LoggedInListener?

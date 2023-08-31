@@ -15,18 +15,26 @@ import UIKit
 
 /// A LoggedInBuildableMock class used for testing.
 class LoggedInBuildableMock: LoggedInBuildable {
+    
+    
 
     // Function Handlers
-    var buildHandler: ((_ listener: LoggedInListener) -> LoggedInRouting)?
+    var buildHandler: ((_ listener: LoggedInListener,
+                        _ player1Name: String,
+                        _ player2Name: String) -> (LoggedInRouting,
+                                                          LoggedInActionableItem))?
     var buildCallCount: Int = 0
 
     init() {
     }
 
-    func build(withListener listener: LoggedInListener) -> LoggedInRouting {
+    func build(withListener listener: TicTacToe.LoggedInListener,
+               player1Name: String,
+               player2Name: String) -> (router: TicTacToe.LoggedInRouting,
+                                        actionableItem: TicTacToe.LoggedInActionableItem) {
         buildCallCount += 1
-        if let buildHandler = buildHandler {
-            return buildHandler(listener)
+        if let buildHandler {
+            return buildHandler(listener, player1Name, player2Name)
         }
         fatalError("Function build returns a value that can't be handled with a default value and its handler must be set")
     }
@@ -35,7 +43,8 @@ class LoggedInBuildableMock: LoggedInBuildable {
 // MARK: - LoggedInInteractableMock class
 
 /// A LoggedInInteractableMock class used for testing.
-class LoggedInInteractableMock: LoggedInInteractable {
+class LoggedInInteractableMock: LoggedInInteractable,
+                                LoggedInActionableItem {
     
     // Variables
     var router: LoggedInRouting? { didSet { routerSetCallCount += 1 } }
@@ -57,6 +66,8 @@ class LoggedInInteractableMock: LoggedInInteractable {
     var startTicTacToeCallCount: Int = 0
     var gameDidEndHandler: (() -> ())?
     var gameDidEndCallCount: Int = 0
+    var launchGameCallCount: Int = 0
+    var launchGameHandler: ((_ id: String?) -> Observable<(LoggedInActionableItem, ())>)?
 
     init() {
     }
@@ -74,6 +85,14 @@ class LoggedInInteractableMock: LoggedInInteractable {
             return deactivateHandler()
         }
     }
+    
+    func launchGame(with id: String?) -> RxSwift.Observable<(TicTacToe.LoggedInActionableItem, ())> {
+        launchGameCallCount += 1
+        if let launchGameHandler {
+            return launchGameHandler(id)
+        }
+        fatalError("Function build returns a value that can't be handled with a default value and its handler must be set")
+    }
 
     func startTicTacToe() {
         startTicTacToeCallCount += 1
@@ -82,7 +101,8 @@ class LoggedInInteractableMock: LoggedInInteractable {
         }
     }
 
-    func gameDidEnd() {
+    
+    func gameDidEnd(with winner: TicTacToe.PlayerKind) {
         gameDidEndCallCount += 1
         if let gameDidEndHandler = gameDidEndHandler {
             return gameDidEndHandler()
@@ -237,30 +257,22 @@ class RootInteractableMock: RootInteractable {
 
 /// A RootViewControllableMock class used for testing.
 class RootViewControllableMock: RootViewControllable {
+    
     // Variables
     var uiviewController: UIViewController = UIViewController() { didSet { uiviewControllerSetCallCount += 1 } }
     var uiviewControllerSetCallCount = 0
 
     // Function Handlers
-    var presentHandler: ((_ viewController: ViewControllable) -> ())?
-    var presentCallCount: Int = 0
-    var dismissHandler: ((_ viewController: ViewControllable) -> ())?
-    var dismissCallCount: Int = 0
+    var replaceModelHandler: ((_ viewController: ViewControllable?) -> ())?
+    var replaceModalCallCount: Int = 0
 
     init() {
     }
 
-    func present(viewController: ViewControllable) {
-        presentCallCount += 1
-        if let presentHandler = presentHandler {
-            return presentHandler(viewController)
-        }
-    }
-
-    func dismiss(viewController: ViewControllable) {
-        dismissCallCount += 1
-        if let dismissHandler = dismissHandler {
-            return dismissHandler(viewController)
+    func replaceModal(viewController: RIBs.ViewControllable?) {
+        replaceModalCallCount += 1
+        if let replaceModelHandler {
+            return replaceModelHandler(viewController)
         }
     }
 }
