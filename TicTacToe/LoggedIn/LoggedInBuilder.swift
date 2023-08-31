@@ -41,7 +41,8 @@ final class LoggedInComponent: Component<LoggedInDependency> {
 protocol LoggedInBuildable: Buildable {
     func build(withListener listener: LoggedInListener,
                player1Name: String,
-               player2Name: String) -> LoggedInRouting
+               player2Name: String) -> (router: LoggedInRouting,
+                                        actionableItem: LoggedInActionableItem)
 }
 
 final class LoggedInBuilder: Builder<LoggedInDependency>, LoggedInBuildable {
@@ -52,7 +53,8 @@ final class LoggedInBuilder: Builder<LoggedInDependency>, LoggedInBuildable {
 
     func build(withListener listener: LoggedInListener,
                player1Name: String,
-               player2Name: String) -> LoggedInRouting {
+               player2Name: String) -> (router: LoggedInRouting,
+                                        actionableItem: LoggedInActionableItem) {
         let component = LoggedInComponent(dependency: dependency,
                                           player1Name: player1Name,
                                           player2Name: player2Name)
@@ -63,9 +65,10 @@ final class LoggedInBuilder: Builder<LoggedInDependency>, LoggedInBuildable {
         let offGameBuilder = OffGameBuilder(dependency: component)
         let ticTacToeBuilder = TicTacToeBuilder(dependency: component)
         
-        return LoggedInRouter(interactor: interactor,
-                              viewController: component.loggedInViewController,
-                              offGameBuilder: offGameBuilder,
-                              ticTacToeBuilder: ticTacToeBuilder)
+        let router = LoggedInRouter(interactor: interactor,
+                                    viewController: component.loggedInViewController,
+                                    offGameBuilder: offGameBuilder,
+                                    ticTacToeBuilder: ticTacToeBuilder)
+        return (router, interactor)
     }
 }

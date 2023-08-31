@@ -15,12 +15,6 @@ protocol TicTacToePresentableListener: AnyObject {
     func closeGame()
 }
 
-enum PlayerKind: Int {
-    case player1
-    case player2
-    case none
-}
-
 final class TicTacToeViewModel: ObservableObject, TicTacToePresentable {
 
     weak var listener: TicTacToePresentableListener?
@@ -39,7 +33,6 @@ final class TicTacToeViewModel: ObservableObject, TicTacToePresentable {
     
     func didTapCell(row: Int, column: Int) {
         listener?.placeCurrentPlayerMark(atRow: row, col: column)
-        print("")
     }
     
     func didTapAlertOkButton() {

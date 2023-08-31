@@ -8,6 +8,7 @@ target 'TicTacToe' do
 
   # Pods for TicTacToe
   pod "RIBs"
+pod 'SnapKit', '~> 4.0.0'
 
 post_install do |installer|
     installer.generated_projects.each do |project|

@@ -8,7 +8,7 @@
 
 import RxSwift
 
-struct Score {
+public struct Score {
     let player1Score: Int
     let player2Score: Int
 
@@ -17,7 +17,7 @@ struct Score {
     }
 }
 
-protocol ScoreStream: class {
+public protocol ScoreStream: class {
     var score: Observable<Score> { get }
 }
 
@@ -36,7 +36,6 @@ class ScoreStreamImpl: MutableScoreStream {
     }
 
     func updateScore(withWinner winner: PlayerKind) {
-        print("update score")
         let newScore: Score = {
             let currentScore = variable.value
             if winner == .player1 {
@@ -47,7 +46,6 @@ class ScoreStreamImpl: MutableScoreStream {
                              player2Score: currentScore.player2Score + 1)
             }
         }()
-        print("new score is \(newScore)")
         variable.value = newScore
     }
 

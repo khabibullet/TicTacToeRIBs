@@ -8,15 +8,16 @@
 
 import RIBs
 
-protocol LoggedInInteractable: Interactable, OffGameListener, TicTacToeListener {
+protocol LoggedInInteractable: Interactable,
+                               OffGameListener,
+                               TicTacToeListener {
     var router: LoggedInRouting? { get set }
     var listener: LoggedInListener? { get set }
 }
 
 protocol LoggedInViewControllable: ViewControllable {
     // TODO: Declare methods the router invokes to manipulate the view hierarchy.
-    func present(viewController: ViewControllable)
-    func dismiss(viewController: ViewControllable)
+    func replaceModal(viewController: ViewControllable?)
 }
 
 final class LoggedInRouter: Router<LoggedInInteractable>, LoggedInRouting {
@@ -32,29 +33,21 @@ final class LoggedInRouter: Router<LoggedInInteractable>, LoggedInRouting {
         interactor.router = self
     }
     
-    override func didLoad() {
-        super.didLoad()
-        
-        attachOffGame()
-    }
-    
     func cleanupViews() {
-        if let currentChild {
-            viewController.dismiss(viewController: currentChild.viewControllable)
+        if currentChild != nil {
+            viewController.replaceModal(viewController: nil)
         }
     }
     
     func routeToTicTacToe() {
         detachCurrentChild()
 
-        let ticTacToe = ticTacToeBuilder.build(withListener: interactor)
-        currentChild = ticTacToe
-        attachChild(ticTacToe)
-        viewController.present(viewController: ticTacToe.viewControllable)
+        attachTicTacToe()
     }
     
     func routeToOffGame() {
         detachCurrentChild()
+        
         attachOffGame()
     }
     
@@ -70,15 +63,22 @@ final class LoggedInRouter: Router<LoggedInInteractable>, LoggedInRouting {
     
     private func attachOffGame() {
         let offGame = offGameBuilder.build(withListener: interactor)
-        self.currentChild = offGame
+        currentChild = offGame
         attachChild(offGame)
-        viewController.present(viewController: offGame.viewControllable)
+        viewController.replaceModal(viewController: offGame.viewControllable)
+    }
+    
+    private func attachTicTacToe() {
+        let ticTacToe = ticTacToeBuilder.build(withListener: interactor)
+        currentChild = ticTacToe
+        attachChild(ticTacToe)
+        viewController.replaceModal(viewController: ticTacToe.viewControllable)
     }
     
     private func detachCurrentChild() {
         if let currentChild = currentChild {
             detachChild(currentChild)
-            viewController.dismiss(viewController: currentChild.viewControllable)
+            viewController.replaceModal(viewController: nil)
         }
     }
 }
